@@ -13,7 +13,7 @@ namespace HawkMiddlewares.Data
 
         public string Password { get; set; }
         
-        public TUserId? UserId { get; set; }
+        public TUserId UserId { get; set; }
         public string XApp { get; set; }
         public string XVersion { get; set; }
         public string XAuth { get; set; }
@@ -22,12 +22,12 @@ namespace HawkMiddlewares.Data
 
         public TUserId FromString(string userId)
         {
-            return default;
+            return (TUserId) Convert.ChangeType(userId, typeof(TUserId));
         }
 
         public string ToStringUserId()
         {
-            return UserId?.ToString();
+            return UserId.ToString();
         }
     }   
 }
