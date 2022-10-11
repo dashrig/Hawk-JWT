@@ -17,7 +17,7 @@ namespace HawkMiddlewares
             where 
                 TContext : HawkJwtAuthProviderContext
         {
-            ServiceLifetime contextLifetime = ServiceLifetime.Transient;
+            ServiceLifetime contextLifetime = ServiceLifetime.Scoped;
 
             return AddHawkJwt<TContext>(services, null, contextLifetime);
 
@@ -35,7 +35,7 @@ namespace HawkMiddlewares
             where 
                 TContext : HawkJwtAuthProviderContext
         {
-            ServiceLifetime contextLifetime = ServiceLifetime.Transient;
+            ServiceLifetime contextLifetime = ServiceLifetime.Scoped;
 
             return AddHawkJwt<TContext>(services, opt, contextLifetime);
         }
@@ -52,20 +52,28 @@ namespace HawkMiddlewares
         public static IServiceCollection AddHawkJwt<TContext>(
             this IServiceCollection services,
             Action<JwtOptions> opt,
-            ServiceLifetime contextLifetime = ServiceLifetime.Transient)
+            ServiceLifetime contextLifetime = ServiceLifetime.Scoped)
             where
                 TContext : HawkJwtAuthProviderContext
         {
             if (opt != null)
                 services.Configure<JwtOptions>(opt);
 
-            services.AddTransient<ITokenService, TokenService>();
+            if(contextLifetime == ServiceLifetime.Scoped)
+            {
+                services.AddScoped<ITokenService, TokenService>();
+                services.AddScoped<IHawkJwtAuthProvider, TContext>();
 
-            services.TryAdd(
-                    new ServiceDescriptor(
-                        typeof(TContext),
-                        p => p.GetService<TContext>(),
-                        contextLifetime));
+            }else if(contextLifetime == ServiceLifetime.Transient)
+            {
+                services.AddTransient<ITokenService, TokenService>();
+                services.AddTransient<IHawkJwtAuthProvider, TContext>();
+            }
+            else if (contextLifetime == ServiceLifetime.Singleton)
+            {
+                services.AddSingleton<ITokenService, TokenService>();
+                services.AddSingleton<IHawkJwtAuthProvider, TContext>();
+            }
 
             return services;
         }
