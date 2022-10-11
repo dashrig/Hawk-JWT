@@ -1,4 +1,4 @@
-# hawk-jwt
+# Hawk JWT .Net Core Middleware
 Middleware for JWT &amp; Authentication using .Net Core 6.0
 Simplified your JWT Implementation on ASP .Net Core by using Middleware.
 
