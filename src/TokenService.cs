@@ -14,6 +14,9 @@ namespace HawkMiddlewares
         public TokenService(IOptions<JwtOptions> config)
         {
             _config = config.Value;
+
+            if(_config==null)
+                throw new ArgumentNullException("No Hawk JWT Option supplied, please declare an option for your token & cryptogphy when register Hawk JWT Service `service.AddHawkJwt<TContext>()`!");
         }
 
         public string BuildToken(string key, string issuer, XAuthData user) 
@@ -28,7 +31,7 @@ namespace HawkMiddlewares
         };
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+            var credentials = new SigningCredentials(securityKey, _config.Cryptography);
             var tokenDescriptor = new JwtSecurityToken(
                 issuer, issuer, claims,
                 expires: DateTime.UtcNow.AddDays(_config.TokenDefaultExpire),

@@ -8,20 +8,22 @@ namespace HawkMiddlewares
     public class HawkJwtMiddleware 
     {
         private readonly RequestDelegate _next;
-        private readonly ITokenService _token;
-        private readonly JwtOptions _config;
+        private  ITokenService _token;
+        private  JwtOptions _config;
 
-        public HawkJwtMiddleware(RequestDelegate next, ITokenService tokenService, IOptions<JwtOptions> config)
+        public HawkJwtMiddleware(RequestDelegate next)
         {
             
             _next = next;
-            _token = tokenService;
-            _config = config.Value;
+            
         }
 
-        public async Task Invoke(HttpContext context, IHawkJwtAuthProvider provider)
+        public async Task Invoke(HttpContext context, ITokenService tokenService, IOptions<JwtOptions> config, IHawkJwtAuthProvider provider)
         {
-            var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            _token = tokenService;
+            _config = config.Value;
+
+            var token = context.Request.Headers[_config.XAuthHttpHeader].FirstOrDefault()?.Split(" ").Last();
 
             if (token != null)
                 AttachUserToContext(context, provider, token);
@@ -41,7 +43,7 @@ namespace HawkMiddlewares
                 if (_config.CheckUserExist)
                     isUserExist = provider?.IsUserExist(tokenAuthData);
 
-                context.Items.Add("AUTH", tokenAuthData);
+                context.Items.Add(_config.XAuthHttpContextName, tokenAuthData);
 
             }
             catch
