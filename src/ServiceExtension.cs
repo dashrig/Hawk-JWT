@@ -13,14 +13,13 @@ namespace HawkMiddlewares
         // <typeparam name="TUserIdType">UserId datatype</typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddHawkJwt<TContext, TUserIdType>(this IServiceCollection services)
+        public static IServiceCollection AddHawkJwt<TContext>(this IServiceCollection services)
             where 
-                TContext : HawkJwtAuthProviderContext<TUserIdType>,
-                new() where TUserIdType : IConvertible
+                TContext : HawkJwtAuthProviderContext
         {
             ServiceLifetime contextLifetime = ServiceLifetime.Transient;
 
-            return AddHawkJwt<TContext, TUserIdType>(services, null, contextLifetime);
+            return AddHawkJwt<TContext>(services, null, contextLifetime);
 
         }
 
@@ -32,14 +31,13 @@ namespace HawkMiddlewares
         /// <param name="services"></param>
         /// <param name="opt"></param>
         /// <returns></returns>
-        public static IServiceCollection AddHawkJwt<TContext, TUserIdType>(this IServiceCollection services, Action<JwtOptions> opt)
+        public static IServiceCollection AddHawkJwt<TContext>(this IServiceCollection services, Action<JwtOptions> opt)
             where 
-                TContext : HawkJwtAuthProviderContext<TUserIdType>,
-                new() where TUserIdType : IConvertible
+                TContext : HawkJwtAuthProviderContext
         {
             ServiceLifetime contextLifetime = ServiceLifetime.Transient;
 
-            return AddHawkJwt<TContext, TUserIdType>(services, opt, contextLifetime);
+            return AddHawkJwt<TContext>(services, opt, contextLifetime);
         }
 
         /// <summary>
@@ -51,18 +49,17 @@ namespace HawkMiddlewares
         /// <param name="opt"></param>
         /// <param name="contextLifetime"></param>
         /// <returns></returns>
-        public static IServiceCollection AddHawkJwt<TContext, TUserIdType>(
+        public static IServiceCollection AddHawkJwt<TContext>(
             this IServiceCollection services,
             Action<JwtOptions> opt,
             ServiceLifetime contextLifetime = ServiceLifetime.Transient)
             where
-                TContext : HawkJwtAuthProviderContext<TUserIdType>,
-                new() where TUserIdType : IConvertible
+                TContext : HawkJwtAuthProviderContext
         {
             if (opt != null)
                 services.Configure<JwtOptions>(opt);
 
-            services.AddTransient<ITokenService<TUserIdType>, TokenService<TUserIdType>>();
+            services.AddTransient<ITokenService, TokenService>();
 
             services.TryAdd(
                     new ServiceDescriptor(

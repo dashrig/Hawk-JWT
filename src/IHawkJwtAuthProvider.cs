@@ -7,9 +7,9 @@ using HawkMiddlewares.Data;
 
 namespace HawkMiddlewares
 {
-    public interface IHawkJwtAuthProvider<TUserIdType> where TUserIdType : IConvertible
+    public interface IHawkJwtAuthProvider 
     {
-         bool IsUserExist(XAuthData<TUserIdType> authData);
-         XAuthData<TUserIdType> GetUserData(XAuthData<TUserIdType> authData);
+         bool IsUserExist(XAuthData authData);
+         XAuthData GetUserData(XAuthData authData);
     }
 }

@@ -7,7 +7,7 @@ using HawkMiddlewares.Data;
 
 namespace HawkMiddlewares
 {
-    public class TokenService<TUserIdType> : ITokenService<TUserIdType> where TUserIdType : IConvertible
+    public class TokenService : ITokenService
     {
         private readonly JwtOptions _config;
 
@@ -16,13 +16,11 @@ namespace HawkMiddlewares
             _config = config.Value;
         }
 
-
-
-        public string BuildToken(string key, string issuer, XAuthData<TUserIdType> user) 
+        public string BuildToken(string key, string issuer, XAuthData user) 
         {
             var claims = new[] {
             new Claim("Username", user.Username),
-            new Claim("UserId", user.ToStringUserId()),
+            new Claim("UserId", user.UserId),
             new Claim("XApp", user.XApp.ToString()),
             new Claim("XVersion", user.XVersion),
             new Claim("XSession", Guid.NewGuid().ToString()),
@@ -38,7 +36,7 @@ namespace HawkMiddlewares
 
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
-        public bool IsTokenValid(string key, string issuer, string token, out XAuthData<TUserIdType> userData)
+        public bool IsTokenValid(string key, string issuer, string token, out XAuthData userData)
         {
             var mySecret = Encoding.UTF8.GetBytes(key);
             var mySecurityKey = new SymmetricSecurityKey(mySecret);
@@ -68,9 +66,9 @@ namespace HawkMiddlewares
             return true;
         }
 
-        private XAuthData<TUserIdType> UnpackTokenData(SecurityToken validatedToken) 
+        private XAuthData UnpackTokenData(SecurityToken validatedToken) 
         {
-            XAuthData<TUserIdType> userData;
+            XAuthData userData;
             var jwtToken = (JwtSecurityToken)validatedToken;
 
             var username = jwtToken.Claims.First(x => x.Type == "Username").Value;
@@ -80,23 +78,23 @@ namespace HawkMiddlewares
             var xversion = jwtToken.Claims.First(x => x.Type == "XVersion").Value;
             var xapp = jwtToken.Claims.First(x => x.Type == "XApp").Value;
 
-            userData = new XAuthData<TUserIdType>()
+            userData = new XAuthData()
             {
                 Username = username,
+                UserId = userId,
                 XApp = xapp,
                 XSession=xsession,
                 XVersion = xversion,
                 XRoles = xroles,
             };
 
-            userData.UserId = userData.FromString(userId);
 
             return userData;
         }
 
 
         public bool ValidateToken(string key, string issuer, string audience, 
-            string token, out XAuthData<TUserIdType> userData)
+            string token, out XAuthData userData)
         {
             return IsTokenValid(key, issuer, token, out userData);
         }

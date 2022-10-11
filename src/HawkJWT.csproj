@@ -1,12 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>Dashrig.HawkJWT</PackageId>
+    <Version>0.9.1</Version>
+	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/dashrig/Hawk-JWT</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dashrig/Hawk-JWT</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>JWT,Auth,Token, API-Auth</PackageTags>
   </PropertyGroup>
 
-  <ItemGroup>
+	<ItemGroup>
+		<None Include="LICENSE" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />

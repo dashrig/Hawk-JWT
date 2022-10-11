@@ -5,13 +5,13 @@ using HawkMiddlewares.Data;
 namespace HawkMiddlewares
 {
 
-    public class HawkJwtMiddleware<TUserIdType> where TUserIdType : IConvertible
+    public class HawkJwtMiddleware 
     {
         private readonly RequestDelegate _next;
-        private readonly ITokenService<TUserIdType> _token;
+        private readonly ITokenService _token;
         private readonly JwtOptions _config;
 
-        public HawkJwtMiddleware(RequestDelegate next, ITokenService<TUserIdType> tokenService, IOptions<JwtOptions> config)
+        public HawkJwtMiddleware(RequestDelegate next, ITokenService tokenService, IOptions<JwtOptions> config)
         {
             
             _next = next;
@@ -19,7 +19,7 @@ namespace HawkMiddlewares
             _config = config.Value;
         }
 
-        public async Task Invoke(HttpContext context, IHawkJwtAuthProvider<TUserIdType> provider)
+        public async Task Invoke(HttpContext context, IHawkJwtAuthProvider provider)
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
@@ -29,11 +29,11 @@ namespace HawkMiddlewares
             await _next(context);
         }
 
-        private void AttachUserToContext(HttpContext context, IHawkJwtAuthProvider<TUserIdType> provider, string token)
+        private void AttachUserToContext(HttpContext context, IHawkJwtAuthProvider provider, string token)
         {
             try
             {
-                XAuthData<TUserIdType> tokenAuthData;
+                XAuthData tokenAuthData;
                 var res = _token.ValidateToken(_config.TokenKey, _config.TokenIssuer, _config.TokenAudience, token, out tokenAuthData);
 
                 bool? isUserExist = false;

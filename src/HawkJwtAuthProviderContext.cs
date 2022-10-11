@@ -2,15 +2,15 @@
 
 namespace HawkMiddlewares
 {
-    public abstract class HawkJwtAuthProviderContext<TUserIdType> : IHawkJwtAuthProvider<TUserIdType> 
-        where TUserIdType : IConvertible
+    public abstract class HawkJwtAuthProviderContext : IHawkJwtAuthProvider
+        
     {
-        public virtual XAuthData<TUserIdType> GetUserData(XAuthData<TUserIdType> authData)
+        public virtual XAuthData GetUserData(XAuthData authData)
         {
             throw new NotImplementedException();
         }
 
-        public virtual bool IsUserExist(XAuthData<TUserIdType> authData)
+        public virtual bool IsUserExist(XAuthData authData)
         {
             throw new NotImplementedException();
         }

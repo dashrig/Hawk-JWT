@@ -3,9 +3,9 @@
 namespace HawkMiddlewares
 {
 
-    public interface ITokenService<TUserIdType> where TUserIdType : IConvertible
+    public interface ITokenService
     {
-        string BuildToken(string key, string issuer, XAuthData<TUserIdType> user);
-        bool ValidateToken(string key, string issuer, string audience, string token, out XAuthData<TUserIdType> authData);
+        string BuildToken(string key, string issuer, XAuthData user);
+        bool ValidateToken(string key, string issuer, string audience, string token, out XAuthData authData);
     }
 }
