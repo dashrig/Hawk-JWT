@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HawkMiddlewares", "HawkMiddlewares.csproj", "{72508F17-3265-42E9-9A72-4AE92D238DBB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{216512AA-16B4-489A-ADAB-5B5C35301A51}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72508F17-3265-42E9-9A72-4AE92D238DBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72508F17-3265-42E9-9A72-4AE92D238DBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72508F17-3265-42E9-9A72-4AE92D238DBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72508F17-3265-42E9-9A72-4AE92D238DBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F10D8D62-112D-40AE-BDB1-FBDFBB4DDC07}
+	EndGlobalSection
+EndGlobal
